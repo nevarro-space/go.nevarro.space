@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="go-import" content="{{ .ImportPath }} git https://github.com/{{ .Owner }}/{{ .Repo }}.git">
+  <link href="https://iosevka-webfonts.github.io/iosevka/Iosevka.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+  <style>
+    html, body {
+      height: 100%;
+    }
+    body {
+      text-align: center;
+      font-family: Iosevka, monospace;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        table {
+          vertical-align: middle;
+
+          tr:hover { background-color: #DDD; }
+          td {
+            padding: .5rem;
+
+            .fa {
+              margin-left: 0.5rem;
+              width: 1.5rem;
+            }
+
+            .fa-clipboard {
+              cursor: pointer;
+            }
+
+            .fa-check {
+              color: green;
+            }
+          }
+        }
+      }
+    }
+  </style>
+
+  <title>{{ .Repo }}</title>
+</head>
+<body>
+  <div>
+    <h1>{{ .Repo }}</h1>
+    <table cellspacing="0">
+      <tr>
+        <td><b>Install</b></td>
+        <td>
+          <span id="go-get">go get {{ .ImportPath }}@latest</span>
+          <i id="copy-btn" class="fa fa-clipboard"></i>
+        </td>
+      </tr>
+      <tr>
+        <td><b>GoDoc</b></td>
+        <td><a href="https://pkg.go.dev/{{ .ImportPath }}">{{ .ImportPath }}</a></td>
+      </tr>
+      <tr>
+        <td><b>GitHub</b></td>
+        <td><a href="https://github.com/{{ .Owner }}/{{ .Repo }}">{{ .Owner }}/{{ .Repo }}</a></td>
+      </tr>
+    </table>
+  </div>
+  <script>
+    document.getElementById("copy-btn").addEventListener("click", () => {
+      navigator.clipboard.writeText("go get {{ .ImportPath }}@latest").then(() => {
+        const copyBtn = document.getElementById("copy-btn");
+        copyBtn.classList.remove("fa-clipboard");
+        copyBtn.classList.add("fa-check");
+        setTimeout(() => {
+          copyBtn.classList.remove("fa-check");
+          copyBtn.classList.add("fa-clipboard");
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+      })
+    })
+  </script>
+</body>
+</html>
